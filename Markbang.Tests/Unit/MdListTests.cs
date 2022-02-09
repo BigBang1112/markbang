@@ -1,8 +1,4 @@
-﻿using System;
-using System.IO;
-using Xunit;
-
-namespace Markbang.Tests.Unit;
+﻿namespace Markbang.Tests.Unit;
 
 public class MdListTests
 {
@@ -10,11 +6,11 @@ public class MdListTests
     public void TryParse_Mixed_ShouldCreateMdList()
     {
         var str =
-"- hello\n" +
-"  1. how are you doing\n" +
-"  2. ok\n" +
-"    - bruh\n" +
-"3. kek\n" +
+"- hello" + Environment.NewLine +
+"  1. how are you doing" + Environment.NewLine +
+"  2. ok" + Environment.NewLine +
+"    - bruh" + Environment.NewLine +
+"3. kek" + Environment.NewLine +
 "  - I am doing great";
 
         var expectedList = new IMdListItem[]
@@ -49,8 +45,8 @@ public class MdListTests
     public void TryParse_MultipleItemsUnordered_ShouldCreateMdList()
     {
         var str =
-"- hello\n" +
-"- how are you doing\n" +
+"- hello" + Environment.NewLine +
+"- how are you doing" + Environment.NewLine +
 "- I am doing great";
 
         var expectedList = new IMdListItem[]
@@ -82,8 +78,8 @@ public class MdListTests
     public void TryParse_MultipleItemsOrdered_ShouldCreateMdList()
     {
         var str =
-"1. hello\n" +
-"2. how are you doing\n" +
+"1. hello" + Environment.NewLine +
+"2. how are you doing" + Environment.NewLine +
 "3. I am doing great";
 
         var expectedList = new IMdListItem[]
@@ -101,9 +97,9 @@ public class MdListTests
     public void TryParse_MultipleItemsUnorderedHeaderAfter_ShouldCreateMdList()
     {
         var str =
-"- hello\n" +
-"- how are you doing\n" +
-"- I am doing great\n" +
+"- hello" + Environment.NewLine +
+"- how are you doing" + Environment.NewLine +
+"- I am doing great" + Environment.NewLine +
 "# header";
 
         var expectedList = new IMdListItem[]
