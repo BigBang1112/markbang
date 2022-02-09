@@ -2,9 +2,9 @@
 
 public record MdHeading(int Level, string Text) : IMdHeading
 {
-    public static bool TryParse(ReadOnlySpan<char> span, out IMdBlock? value)
+    public static bool TryParse(in ReadOnlySpan<char> span, out IMdBlock? value)
     {
-        if (!span.StartsWith("#"))
+        if (span.IsEmpty || span[0] != '#')
         {
             value = null;
             return false;
@@ -25,7 +25,7 @@ public record MdHeading(int Level, string Text) : IMdHeading
 
         level++;
 
-        value = new MdHeading(level, span[level..].ToString());
+        value = new MdHeading(level, span[level..].Trim().ToString());
 
         return true;
     }
