@@ -30,15 +30,38 @@ public class Markdown : IList<IMdBlock>
         set => blocks[index] = value;
     }
 
+    public static Markdown Parse(string fileName)
+    {
+        using var r = new StreamReader(fileName);
+        return Parse(r);
+    }
+
     public static Markdown Parse(TextReader reader)
     {
         var blocks = new List<IMdBlock>();
 
-        while (true)
+        var paragraph = default(IMdParagraph);
+
+        while (TryParseBlock(reader, out IMdBlock? block, out ReadOnlySpan<char> possibleParagraphLine))
         {
-            if (!TryParseBlock(reader, out var block))
+            if (possibleParagraphLine.Length > 0)
             {
-                break;
+                if (paragraph is null)
+                {
+                    paragraph = new MdParagraph(possibleParagraphLine);
+
+                    continue;
+                }
+
+                paragraph.Add(possibleParagraphLine.ToString());
+
+                continue;
+            }
+
+            if (paragraph is not null)
+            {
+                blocks.Add(paragraph);
+                paragraph = null;
             }
 
             if (block is null)
@@ -52,33 +75,34 @@ public class Markdown : IList<IMdBlock>
         return new Markdown(blocks);
     }
 
-    private static bool TryParseBlock(TextReader reader, out IMdBlock? block)
+    private static bool TryParseBlock(TextReader reader, out IMdBlock? block, out ReadOnlySpan<char> possibleParagraphLine)
     {
         var lineStr = reader.ReadLine();
 
-        if (lineStr is null)
+        if (string.IsNullOrEmpty(lineStr))
         {
             block = null;
-            return false;
-        }
+            possibleParagraphLine = ReadOnlySpan<char>.Empty;
 
-        if (lineStr == "")
-        {
-            block = null;
-            return true;
+            // True if empty, false if null
+            return lineStr == "";
         }
 
         var line = lineStr.AsSpan();
 
-        if (MdHeading.TryParse(line, out block))
+        if (MdHeading.TryParse(in line, out block))
         {
+            possibleParagraphLine = ReadOnlySpan<char>.Empty;
             return true;
         }
 
         if (MdList.TryParse(ref line, level: 0, reader, out block))
         {
+            possibleParagraphLine = ReadOnlySpan<char>.Empty;
             return true;
         }
+
+        possibleParagraphLine = line;
 
         return true;
     }
