@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Markbang", "Markbang\Markbang.csproj", "{12DE29B7-D488-4EFA-A7D6-5EEBD9DCD015}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Markbang.Tests", "Markbang.Tests\Markbang.Tests.csproj", "{24F686FF-596E-4DD7-ACE8-E41B3B2A0613}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{12DE29B7-D488-4EFA-A7D6-5EEBD9DCD015}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12DE29B7-D488-4EFA-A7D6-5EEBD9DCD015}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12DE29B7-D488-4EFA-A7D6-5EEBD9DCD015}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12DE29B7-D488-4EFA-A7D6-5EEBD9DCD015}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24F686FF-596E-4DD7-ACE8-E41B3B2A0613}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24F686FF-596E-4DD7-ACE8-E41B3B2A0613}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24F686FF-596E-4DD7-ACE8-E41B3B2A0613}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24F686FF-596E-4DD7-ACE8-E41B3B2A0613}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E3C08ABF-725D-4559-AB7E-B0C333EAD770}
+	EndGlobalSection
+EndGlobal
