@@ -53,7 +53,7 @@ public class Markdown : IList<IMdBlock>
                     continue;
                 }
 
-                paragraph.Add(possibleParagraphLine.ToString());
+                paragraph.Lines.Add(possibleParagraphLine.ToString());
 
                 continue;
             }

@@ -1,27 +1,16 @@
-﻿using System.Collections;
-
-namespace Markbang;
+﻿namespace Markbang;
 
 public class MdParagraph : IMdParagraph
 {
-    private readonly IList<string> lines;
-
-    public int Count => lines.Count;
-    public bool IsReadOnly => lines.IsReadOnly;
-
-    public string this[int index]
-    {
-        get => lines[index];
-        set => lines[index] = value;
-    }
+    public IList<string> Lines { get; init; }
 
     public MdParagraph(ReadOnlySpan<char> span)
     {
-        lines = new List<string>();
+        Lines = new List<string>();
 
         foreach (var line in span.EnumerateLines())
         {
-            lines.Add(line.ToString());
+            Lines.Add(line.ToString());
         }
     }
 
@@ -29,93 +18,31 @@ public class MdParagraph : IMdParagraph
     {
         if (readOnly)
         {
-            lines = text.Split(Environment.NewLine);
+            Lines = text.Split(Environment.NewLine);
         }
         else
         {
-            lines = text.Split(Environment.NewLine).ToList();
+            Lines = text.Split(Environment.NewLine).ToList();
         }
     }
 
     public MdParagraph(IEnumerable<string> lines)
     {
-        this.lines = lines.ToList();
+        Lines = lines.ToList();
     }
 
     public MdParagraph(IList<string> lines)
     {
-        this.lines = lines;
+        Lines = lines;
     }
 
     public static implicit operator string(MdParagraph m)
     {
-        return string.Join(Environment.NewLine, m.lines);
-    }
-
-    internal static bool TryParse(ref ReadOnlySpan<char> line, TextReader reader, out IMdBlock? block)
-    {
-        var list = new List<string>();
-
-        while (true)
-        {
-            list.Add(line.Trim().ToString());
-
-            reader.ReadLine();
-        }
-    }
-
-    public int IndexOf(string item)
-    {
-        return lines.IndexOf(item);
-    }
-
-    public void Insert(int index, string item)
-    {
-        lines.Insert(index, item);
-    }
-
-    public void RemoveAt(int index)
-    {
-        lines.RemoveAt(index);
-    }
-
-    public void Add(string item)
-    {
-        lines.Add(item);
-    }
-
-    public void Clear()
-    {
-        lines.Clear();
-    }
-
-    public bool Contains(string item)
-    {
-        return lines.Contains(item);
-    }
-
-    public void CopyTo(string[] array, int arrayIndex)
-    {
-        lines.CopyTo(array, arrayIndex);
-    }
-
-    public bool Remove(string item)
-    {
-        return lines.Remove(item);
-    }
-
-    public IEnumerator<string> GetEnumerator()
-    {
-        return lines.GetEnumerator();
-    }
-
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return lines.GetEnumerator();
+        return string.Join(Environment.NewLine, m.Lines);
     }
 
     public override string ToString()
     {
-        return string.Join(Environment.NewLine, lines);
+        return string.Join(Environment.NewLine, Lines);
     }
 }
