@@ -5,7 +5,14 @@ VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Markbang", "Markbang\Markbang.csproj", "{12DE29B7-D488-4EFA-A7D6-5EEBD9DCD015}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Markbang.Tests", "Markbang.Tests\Markbang.Tests.csproj", "{24F686FF-596E-4DD7-ACE8-E41B3B2A0613}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Markbang.Tests", "Markbang.Tests\Markbang.Tests.csproj", "{24F686FF-596E-4DD7-ACE8-E41B3B2A0613}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Markbang.Benchmarks", "Markbang.Benchmarks\Markbang.Benchmarks.csproj", "{B2C25DEE-C5FD-49CD-B5DF-D087A93E960C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0C804C92-E153-4DBF-ABAB-A0D879304751}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +28,10 @@ Global
 		{24F686FF-596E-4DD7-ACE8-E41B3B2A0613}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24F686FF-596E-4DD7-ACE8-E41B3B2A0613}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24F686FF-596E-4DD7-ACE8-E41B3B2A0613}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2C25DEE-C5FD-49CD-B5DF-D087A93E960C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2C25DEE-C5FD-49CD-B5DF-D087A93E960C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2C25DEE-C5FD-49CD-B5DF-D087A93E960C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2C25DEE-C5FD-49CD-B5DF-D087A93E960C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
