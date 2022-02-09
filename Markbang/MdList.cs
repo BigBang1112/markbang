@@ -9,6 +9,12 @@ public class MdList : IMdList
     public int Count => items.Count;
     public bool IsReadOnly => items.IsReadOnly;
 
+    public IMdListItem this[int index]
+    {
+        get => items[index];
+        set => items[index] = value;
+    }
+
     public MdList(IList<IMdListItem> items)
     {
         this.items = items;
@@ -24,45 +30,58 @@ public class MdList : IMdList
         
     }
 
-    public IMdListItem this[int index]
+    public override string ToString()
     {
-        get => items[index];
-        set => items[index] = value;
+        if (Count == 0)
+        {
+            return "Empty list";
+        }
+
+        return $"{this[0]} + ({Count - 1} more)";
     }
 
     internal static bool TryParse(ref ReadOnlySpan<char> span, int level, TextReader reader, out IMdBlock? value)
     {
-        var items = new List<IMdListItem>();
-
-        var parsed = RecurseItems(ref span, reader, level, items);
-        
-        value = new MdList(items);
-
-        return parsed;
-    }
-
-    private static bool RecurseItems(ref ReadOnlySpan<char> span, TextReader reader, int level, IList<IMdListItem> items)
-    {
         if (!MdListItem.TryParse(in span, level, out IMdListItem? item))
         {
+            value = null;
             return false;
         }
 
-        items.Add(item);
+        var items = new List<IMdListItem> { item };
+
+        RecurseItems(ref span, reader, level, items, firstItemAdded: true);
+        
+        value = new MdList(items);
+
+        return true;
+    }
+
+    private static void RecurseItems(ref ReadOnlySpan<char> span, TextReader reader, int level, IList<IMdListItem> items, bool firstItemAdded = false)
+    {
+        if (!firstItemAdded)
+        {
+            if (!MdListItem.TryParse(in span, level, out IMdListItem? item))
+            {
+                return;
+            }
+
+            items.Add(item);
+        }
 
         span = reader.ReadLine();
 
         if (span.IsEmpty)
         {
-            return true;
+            return;
         }
 
         for (var i = 1; i >= 0; i--)
         {
-            _ = RecurseItems(ref span, reader, level + i, items);
+            RecurseItems(ref span, reader, level + i, items);
         }
 
-        return true;
+        return;
     }
 
     public void Add(IMdListItem item)

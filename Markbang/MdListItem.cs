@@ -34,19 +34,16 @@ public record MdListItem(string Text, int Level = 0, int? Rank = null) : IMdList
             return false;
         }
 
-        var offset = level * 2;
+        var slice = level == 0 ? span : span[(level * 2)..];
 
-        var slice = offset == 0 ? span : span[offset..];
-
-        var indexOfSpace = slice.IndexOf(' ');
-
-        if (indexOfSpace < 1)
+        // Can happen if next level of identation is attempted
+        if (slice.IsEmpty)
         {
             item = null;
             return false;
         }
 
-        var isUnorderedItem = IsUnorderedItem(slice);
+        var isUnorderedItem = IsUnorderedItem(in slice);
         var isOrderedItem = false;
 
         var tempRank = 0;
@@ -71,6 +68,13 @@ public record MdListItem(string Text, int Level = 0, int? Rank = null) : IMdList
 
     private static bool IsOrderedItem(in ReadOnlySpan<char> span, out int rank)
     {
+        // if the first char is even numeric
+        if (span[0] < 48 || span[0] > 57)
+        {
+            rank = 0;
+            return false;
+        }
+
         var indexOfDot = span.IndexOf('.');
 
         if (indexOfDot == -1)
@@ -82,7 +86,7 @@ public record MdListItem(string Text, int Level = 0, int? Rank = null) : IMdList
         return int.TryParse(span[..indexOfDot], out rank);
     }
 
-    private static bool IsUnorderedItem(ReadOnlySpan<char> span)
+    private static bool IsUnorderedItem(in ReadOnlySpan<char> span)
     {
         return span[0] == '-';
     }
