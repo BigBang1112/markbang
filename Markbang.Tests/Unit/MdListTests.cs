@@ -123,7 +123,7 @@ public class MdListTests
     private static void AssertAnyList(string str, out IMdList? actualList, out ReadOnlySpan<char> line)
     {
         var r = new StringReader(str);
-        line = r.ReadLine().AsSpan();
+        line = r.ReadLine();
         var parsed = MdList.TryParse(ref line, 0, r, out IMdBlock? mdBlock);
 
         actualList = mdBlock as IMdList;

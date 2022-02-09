@@ -42,18 +42,18 @@ public class Markdown : IList<IMdBlock>
 
         var paragraph = default(IMdParagraph);
 
-        while (TryParseBlock(reader, out IMdBlock? block, out ReadOnlySpan<char> possibleParagraphLine))
+        while (TryParseBlock(reader, out IMdBlock? block, out string? possibleParagraphLine))
         {
-            if (possibleParagraphLine.Length > 0)
+            if (possibleParagraphLine is not null)
             {
                 if (paragraph is null)
                 {
-                    paragraph = new MdParagraph(possibleParagraphLine);
+                    paragraph = new MdParagraph(possibleParagraphLine, readOnly: false, singleLine: true);
 
                     continue;
                 }
 
-                paragraph.Lines.Add(possibleParagraphLine.ToString());
+                paragraph.Lines.Add(possibleParagraphLine);
 
                 continue;
             }
@@ -75,14 +75,14 @@ public class Markdown : IList<IMdBlock>
         return new Markdown(blocks);
     }
 
-    private static bool TryParseBlock(TextReader reader, out IMdBlock? block, out ReadOnlySpan<char> possibleParagraphLine)
+    private static bool TryParseBlock(TextReader reader, out IMdBlock? block, out string? possibleParagraphLine)
     {
         var lineStr = reader.ReadLine();
 
         if (string.IsNullOrEmpty(lineStr))
         {
             block = null;
-            possibleParagraphLine = ReadOnlySpan<char>.Empty;
+            possibleParagraphLine = null;
 
             // True if empty, false if null
             return lineStr == "";
@@ -92,17 +92,17 @@ public class Markdown : IList<IMdBlock>
 
         if (MdHeading.TryParse(in line, out block))
         {
-            possibleParagraphLine = ReadOnlySpan<char>.Empty;
+            possibleParagraphLine = null;
             return true;
         }
 
         if (MdList.TryParse(ref line, level: 0, reader, out block))
         {
-            possibleParagraphLine = ReadOnlySpan<char>.Empty;
+            possibleParagraphLine = null;
             return true;
         }
 
-        possibleParagraphLine = line;
+        possibleParagraphLine = lineStr;
 
         return true;
     }

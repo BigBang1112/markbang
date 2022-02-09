@@ -4,8 +4,14 @@ public class MdParagraph : IMdParagraph
 {
     public IList<string> Lines { get; init; }
 
-    public MdParagraph(ReadOnlySpan<char> span)
+    public MdParagraph(ReadOnlySpan<char> span, bool singleLine = false)
     {
+        if (singleLine)
+        {
+            Lines = new List<string> { span.ToString() };
+            return;
+        }
+
         Lines = new List<string>();
 
         foreach (var line in span.EnumerateLines())
@@ -14,8 +20,22 @@ public class MdParagraph : IMdParagraph
         }
     }
 
-    public MdParagraph(string text, bool readOnly = false)
+    public MdParagraph(string text, bool readOnly = false, bool singleLine = false)
     {
+        if (singleLine)
+        {
+            if (readOnly)
+            {
+                Lines = new[] { text };
+            }
+            else
+            {
+                Lines = new List<string> { text };
+            }
+
+            return;
+        }
+
         if (readOnly)
         {
             Lines = text.Split(Environment.NewLine);
