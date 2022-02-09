@@ -47,6 +47,23 @@ public class MdParagraph : IMdParagraph
         this.lines = lines;
     }
 
+    public static implicit operator string(MdParagraph m)
+    {
+        return string.Join(Environment.NewLine, m.lines);
+    }
+
+    internal static bool TryParse(ref ReadOnlySpan<char> line, TextReader reader, out IMdBlock? block)
+    {
+        var list = new List<string>();
+
+        while (true)
+        {
+            list.Add(line.Trim().ToString());
+
+            reader.ReadLine();
+        }
+    }
+
     public int IndexOf(string item)
     {
         return lines.IndexOf(item);
@@ -95,5 +112,10 @@ public class MdParagraph : IMdParagraph
     IEnumerator IEnumerable.GetEnumerator()
     {
         return lines.GetEnumerator();
+    }
+
+    public override string ToString()
+    {
+        return string.Join(Environment.NewLine, lines);
     }
 }
