@@ -7,16 +7,18 @@ public class MdCodeBlock : IMdCodeBlock
     public IList<string> CodeLines { get; init; }
     public string? Language { get; init; }
     public int TrimOffset { get; init; }
+    public bool IsIndented { get; init; }
 
-    public MdCodeBlock(IList<string> codeLines, string? language = null, int trimOffset = 0)
+    public MdCodeBlock(IList<string> codeLines, string? language = null, bool isIndented = false, int trimOffset = 0)
     {
         CodeLines = codeLines;
         Language = language;
+        IsIndented = isIndented;
         TrimOffset = trimOffset;
     }
 
-    public MdCodeBlock(string code, string? language = null, bool readOnly = false, int trimOffset = 0)
-        : this(readOnly ? SplitCode(code) : SplitCode(code).ToList<string>(), language, trimOffset)
+    public MdCodeBlock(string code, string? language = null, bool isIndented = false, bool readOnly = false, int trimOffset = 0)
+        : this(readOnly ? SplitCode(code) : SplitCode(code).ToList<string>(), language, isIndented, trimOffset)
     {
 
     }
@@ -26,8 +28,11 @@ public class MdCodeBlock : IMdCodeBlock
         return code.Split(Environment.NewLine);
     }
 
-    public MdCodeBlock(ReadOnlySpan<char> code, string? language = null, int trimOffset = 0)
+    public MdCodeBlock(ReadOnlySpan<char> code, string? language = null, bool isIndented = false, int trimOffset = 0)
     {
+        Language = language;
+        IsIndented = isIndented;
+        TrimOffset = trimOffset;
         CodeLines = new List<string>();
 
         foreach (var line in code.EnumerateLines())
@@ -86,7 +91,7 @@ public class MdCodeBlock : IMdCodeBlock
             }
         }
 
-        value = new MdCodeBlock(codeLines, language, trimOffset);
+        value = new MdCodeBlock(codeLines, language, isIndented: false, trimOffset);
         return false;
     }
 
@@ -117,7 +122,7 @@ public class MdCodeBlock : IMdCodeBlock
 
         span = span.TrimStart();
 
-        value = new MdCodeBlock(codeLines, language: null, trimOffset);
+        value = new MdCodeBlock(codeLines, language: null, isIndented: true, trimOffset);
         return true;
     }
 }
