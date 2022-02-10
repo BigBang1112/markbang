@@ -28,7 +28,7 @@ public record MdListItem(string Text, int Level = 0, int? Rank = null) : IMdList
 
     internal static bool TryParse(in ReadOnlySpan<char> span, int level, int trimOffset, [NotNullWhen(true)] out IMdListItem? item)
     {
-        if (span.IsEmpty)
+        if (trimOffset > span.Length)
         {
             item = null;
             return false;

@@ -64,7 +64,7 @@ public class MdList : IMdList
     {
         if (!firstItemAdded)
         {
-            if (!MdListItem.TryParse(in span, level, trimOffset, out IMdListItem? item))
+            if (span.IsEmpty || !MdListItem.TryParse(in span, level, trimOffset, out IMdListItem? item))
             {
                 return;
             }

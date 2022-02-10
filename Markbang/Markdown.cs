@@ -46,6 +46,11 @@ public class Markdown : IList<IMdBlock>
             out string? possibleParagraphLine,
             out int possibleParagraphLineTrimOffset))
         {
+            if (block is not null)
+            {
+                blocks.Add(block);
+            }
+
             if (possibleParagraphLine is not null)
             {
                 if (paragraph is null)
@@ -65,13 +70,6 @@ public class Markdown : IList<IMdBlock>
                 blocks.Add(paragraph);
                 paragraph = null;
             }
-
-            if (block is null)
-            {
-                continue;
-            }
-
-            blocks.Add(block);
         }
 
         return new Markdown(blocks);
@@ -92,7 +90,15 @@ public class Markdown : IList<IMdBlock>
         }
 
         var line = lineStr.AsSpan();
-        var lineTrimmed = line.TrimStart();
+        var lineTrimmed = line.Trim();
+
+        if (lineTrimmed.IsEmpty)
+        {
+            block = null;
+            possibleParagraphLine = null;
+            possibleParagraphLineTrimOffset = 0;
+            return true;
+        }
 
         var trimLength = GetTrimLength(in line);
 
@@ -103,8 +109,7 @@ public class Markdown : IList<IMdBlock>
             return true;
         }
 
-
-        if (MdList.TryParse(ref lineTrimmed, level: 0, trimOffset: trimLength, reader, out block))
+        if (TryParseBlock_Ref(ref lineTrimmed, trimLength, reader, out block) || lineTrimmed.IsEmpty)
         {
             possibleParagraphLine = null;
             possibleParagraphLineTrimOffset = 0;
@@ -115,6 +120,32 @@ public class Markdown : IList<IMdBlock>
         possibleParagraphLineTrimOffset = trimLength;
 
         return true;
+    }
+
+    /// <summary>
+    /// Try parsing a block that could
+    /// </summary>
+    /// <param name="lineTrimmed"></param>
+    /// <param name="trimLength"></param>
+    /// <param name="reader"></param>
+    /// <param name="block"></param>
+    /// <returns></returns>
+    private static bool TryParseBlock_Ref(ref ReadOnlySpan<char> lineTrimmed,
+                                         int trimLength,
+                                         TextReader reader,
+                                         out IMdBlock? block)
+    {
+        if (MdCodeBlock.TryParse(ref lineTrimmed, trimLength, reader, out block))
+        {
+            return true;
+        }
+        
+        if (MdList.TryParse(ref lineTrimmed, level: 0, trimLength, reader, out block))
+        {
+            return true;
+        }
+
+        return false;
     }
 
     private static int GetTrimLength(in ReadOnlySpan<char> line)

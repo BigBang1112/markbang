@@ -4,7 +4,7 @@ public record MdHeading(int Level, string Text, int TrimOffset = 0) : IMdHeading
 {
     internal static bool TryParse(in ReadOnlySpan<char> span, int trimOffset, out IMdBlock? value)
     {
-        if (span.IsEmpty || span[0] != '#')
+        if (span[0] != '#')
         {
             value = null;
             return false;
