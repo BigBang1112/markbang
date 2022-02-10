@@ -100,9 +100,9 @@ public class Markdown : IList<IMdBlock>
             return true;
         }
 
-        var trimLength = GetTrimLength(in line);
+        var trimLength = line.TrimStartLength();
 
-        if (MdHeading.TryParse(in lineTrimmed, trimLength, out block))
+        if (TryParseBlock_In(in lineTrimmed, trimLength, out block))
         {
             possibleParagraphLine = null;
             possibleParagraphLineTrimOffset = 0;
@@ -123,7 +123,32 @@ public class Markdown : IList<IMdBlock>
     }
 
     /// <summary>
-    /// Try parsing a block that could
+    /// Try parsing a block that cannot change the line after its execution.
+    /// </summary>
+    /// <param name="lineTrimmed"></param>
+    /// <param name="trimLength"></param>
+    /// <param name="reader"></param>
+    /// <param name="block"></param>
+    /// <returns></returns>
+    private static bool TryParseBlock_In(in ReadOnlySpan<char> lineTrimmed,
+                                         int trimLength,
+                                         out IMdBlock? block)
+    {
+        if (MdHeading.TryParse(in lineTrimmed, trimLength, out block))
+        {
+            return true;
+        }
+
+        if (MdHorizontalRule.TryParse(in lineTrimmed, trimLength, out block))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Try parsing a block that could change the line after its execution.
     /// </summary>
     /// <param name="lineTrimmed"></param>
     /// <param name="trimLength"></param>
@@ -146,25 +171,6 @@ public class Markdown : IList<IMdBlock>
         }
 
         return false;
-    }
-
-    private static int GetTrimLength(in ReadOnlySpan<char> line)
-    {
-        var length = 0;
-
-        for (var i = 0; i < line.Length; i++)
-        {
-            if (line[i] == ' ')
-            {
-                length++;
-            }
-            else
-            {
-                break;
-            }
-        }
-
-        return length;
     }
 
     public void Add(IMdBlock item)

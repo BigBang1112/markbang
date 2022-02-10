@@ -7,6 +7,10 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<InternalsVisibleTo Include="Markbang.Tests"/>
+		<Using Include="Markbang.Extensions"/>
+	</ItemGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="Markbang.Tests" />
 	</ItemGroup>
 </Project>
