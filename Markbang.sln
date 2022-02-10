@@ -7,11 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Markbang", "Markbang\Markba
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Markbang.Tests", "Markbang.Tests\Markbang.Tests.csproj", "{24F686FF-596E-4DD7-ACE8-E41B3B2A0613}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Markbang.Benchmarks", "Markbang.Benchmarks\Markbang.Benchmarks.csproj", "{B2C25DEE-C5FD-49CD-B5DF-D087A93E960C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Markbang.Benchmarks", "Markbang.Benchmarks\Markbang.Benchmarks.csproj", "{B2C25DEE-C5FD-49CD-B5DF-D087A93E960C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0C804C92-E153-4DBF-ABAB-A0D879304751}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		LICENSE = LICENSE
 	EndProjectSection
 EndProject
 Global
