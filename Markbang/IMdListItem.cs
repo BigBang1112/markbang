@@ -1,6 +1,6 @@
 ﻿namespace Markbang;
 
-public interface IMdListItem
+public interface IMdListItem : IWriteable
 {
     string Text { get; init; }
     int Level { get; init; }

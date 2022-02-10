@@ -70,4 +70,12 @@ public class MdParagraph : IMdParagraph
     {
         return string.Join(Environment.NewLine, Lines);
     }
+
+    public void Write(TextWriter writer)
+    {
+        foreach (var line in Lines)
+        {
+            writer.WriteLine(line);
+        }
+    }
 }

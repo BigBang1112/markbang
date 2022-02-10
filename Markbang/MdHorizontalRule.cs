@@ -53,4 +53,9 @@ public record MdHorizontalRule(int TrimOffset = 0) : IMdHorizontalRule
 
         return false;
     }
+
+    public void Write(TextWriter writer)
+    {
+        throw new NotImplementedException();
+    }
 }

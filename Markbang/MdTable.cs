@@ -72,39 +72,7 @@ public class MdTable : IMdTable
 
                 if (!columnsDefined)
                 {
-                    if (trimmedCell.IsEmpty)
-                    {
-                        hasIssueWithColumnDefinition = true;
-                        break;
-                    }
-
-                    var rightAlign = trimmedCell[^1] == ':';
-                    var leftAlign = trimmedCell[0] == ':' || !rightAlign;
-                    var centerAlign = leftAlign && rightAlign;
-
-                    var offsetLeft = leftAlign ? 1 : 0;
-                    var offsetRight = rightAlign ? 1 : 0;
-
-                    for (var i = offsetLeft; i < trimmedCell.Length - offsetRight; i++)
-                    {
-                        if (trimmedCell[i] != '-')
-                        {
-                            hasIssueWithColumnDefinition = true;
-                            break;
-                        }
-                    }
-
-                    if (!hasIssueWithColumnDefinition)
-                    {
-                        if (centerAlign)
-                        {
-                            columns[columnCounter] = new Column(Alignment.Center);
-                        }
-                        else if (rightAlign)
-                        {
-                            columns[columnCounter] = new Column(Alignment.Right);
-                        }
-                    }
+                    DefineColumns(trimmedCell, ref columns[columnCounter]);
                 }
                 else
                 {
@@ -124,5 +92,47 @@ public class MdTable : IMdTable
 
         value = new MdTable(cells, columns, trimOffset);
         return true;
+    }
+
+    /// <returns>True if no issues.</returns>
+    private static bool DefineColumns(ReadOnlySpan<char> trimmedCell, ref Column column)
+    {
+        if (trimmedCell.IsEmpty)
+        {
+            return false;
+        }
+
+        var rightAlign = trimmedCell[^1] == ':';
+        var leftAlign = trimmedCell[0] == ':' || !rightAlign;
+        var centerAlign = leftAlign && rightAlign;
+
+        var offsetLeft = leftAlign ? 1 : 0;
+        var offsetRight = rightAlign ? 1 : 0;
+
+        for (var i = offsetLeft; i < trimmedCell.Length - offsetRight; i++)
+        {
+            if (trimmedCell[i] != '-')
+            {
+                return false;
+            }
+        }
+
+        if (centerAlign)
+        {
+            column = new Column(Alignment.Center);
+            return true;
+        }
+
+        if (rightAlign)
+        {
+            column = new Column(Alignment.Right);
+        }
+
+        return true;
+    }
+
+    public void Write(TextWriter writer)
+    {
+        throw new NotImplementedException();
     }
 }

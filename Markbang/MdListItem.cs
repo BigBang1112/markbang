@@ -4,6 +4,54 @@ namespace Markbang;
 
 public record MdListItem(string Text, int Level = 0, int? Rank = null) : IMdListItem
 {
+    public char[] ToCharArray()
+    {
+        var array = Rank is null
+            ? (new char[Level + 2 + Text.Length])
+            : (new char[Level + Rank.Value.Digits() + 2 + Text.Length]);
+
+        var rankLength = 0;
+
+        if (Rank.HasValue)
+        {
+            Rank.Value.TryFormat(array, out rankLength);
+
+            if (Level > 0)
+            {
+                for (var i = rankLength - 1; i >= 0; i--)
+                {
+                    array[i + Level] = array[i];
+                    array[i] = ' ';
+                }
+            }
+
+            array[Level + rankLength] = '.';
+        }
+        else
+        {
+            for (var i = 0; i < Level; i++)
+            {
+                array[i] = ' ';
+            }
+
+            array[Level] = '-';
+        }
+
+        array[Level + rankLength + 1] = ' ';
+
+        for (var i = Level + rankLength + 2; i < array.Length; i++)
+        {
+            array[i] = Text[i - Level - rankLength - 2];
+        }
+
+        return array;
+    }
+
+    public void Write(TextWriter writer)
+    {
+        writer.WriteLine(ToCharArray());
+    }
+
     public override string ToString()
     {
         if (Level > 0)

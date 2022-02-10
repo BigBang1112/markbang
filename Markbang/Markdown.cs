@@ -2,7 +2,7 @@
 
 namespace Markbang;
 
-public class Markdown : IList<IMdBlock>
+public class Markdown : IWriteable, IList<IMdBlock>
 {
     private readonly IList<IMdBlock> blocks;
 
@@ -28,6 +28,32 @@ public class Markdown : IList<IMdBlock>
     {
         get => blocks[index];
         set => blocks[index] = value;
+    }
+
+    public void Write(TextWriter writer)
+    {
+        foreach (var block in blocks)
+        {
+            block.Write(writer);
+            writer.WriteLine();
+        }
+    }
+
+    public void Save(string fileName)
+    {
+        using var w = new StreamWriter(fileName);
+        Save(w);
+    }
+
+    public void Save(TextWriter writer)
+    {
+        Write(writer);
+    }
+
+    public static Markdown ParseText(string text)
+    {
+        using var r = new StringReader(text);
+        return Parse(r);
     }
 
     public static Markdown Parse(string fileName)

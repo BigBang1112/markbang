@@ -138,4 +138,12 @@ public class MdList : IMdList
     {
         return items.GetEnumerator();
     }
+
+    public void Write(TextWriter writer)
+    {
+        foreach (var item in items)
+        {
+            item.Write(writer);
+        }
+    }
 }

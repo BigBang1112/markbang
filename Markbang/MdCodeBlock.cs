@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace Markbang;
+﻿namespace Markbang;
 
 public class MdCodeBlock : IMdCodeBlock
 {
@@ -131,5 +129,10 @@ public class MdCodeBlock : IMdCodeBlock
 
         value = new MdCodeBlock(codeLines, language: null, isIndented: true, trimOffset);
         return true;
+    }
+
+    public void Write(TextWriter writer)
+    {
+        throw new NotImplementedException();
     }
 }
