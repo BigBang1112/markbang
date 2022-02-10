@@ -41,6 +41,7 @@ public class MdCodeBlock : IMdCodeBlock
         }
     }
 
+    /// <remarks>Parameter <paramref name="span"/> should have at least 1 character.</remarks>
     internal static bool TryParse(ref ReadOnlySpan<char> span, int trimOffset, TextReader reader, out IMdBlock? value)
     {
         if (trimOffset == 4)
@@ -118,6 +119,12 @@ public class MdCodeBlock : IMdCodeBlock
             }
 
             codeLines.Add(span[4..].ToString());
+        }
+
+        // Maybe temporary, maybe the best solution
+        while (codeLines[^1] == "")
+        {
+            codeLines.RemoveAt(codeLines.Count - 1);
         }
 
         span = span.TrimStart();
