@@ -9,18 +9,21 @@ public class MdList : IMdList
     public int Count => items.Count;
     public bool IsReadOnly => items.IsReadOnly;
 
+    public int TrimOffset { get; init; }
+
     public IMdListItem this[int index]
     {
         get => items[index];
         set => items[index] = value;
     }
 
-    public MdList(IList<IMdListItem> items)
+    public MdList(IList<IMdListItem> items, int trimOffset = 0)
     {
         this.items = items;
+        TrimOffset = trimOffset;
     }
 
-    public MdList(IEnumerable<IMdListItem> items) : this(items.ToList())
+    public MdList(IEnumerable<IMdListItem> items, int trimOffset = 0) : this(items.ToList(), trimOffset)
     {
         
     }
@@ -40,9 +43,9 @@ public class MdList : IMdList
         return $"{this[0]} + ({Count - 1} more)";
     }
 
-    internal static bool TryParse(ref ReadOnlySpan<char> span, int level, TextReader reader, out IMdBlock? value)
+    internal static bool TryParse(ref ReadOnlySpan<char> span, int level, int trimOffset, TextReader reader, out IMdBlock? value)
     {
-        if (!MdListItem.TryParse(in span, level, out IMdListItem? item))
+        if (!MdListItem.TryParse(in span, level, trimOffset, out IMdListItem? item))
         {
             value = null;
             return false;
@@ -50,18 +53,18 @@ public class MdList : IMdList
 
         var items = new List<IMdListItem> { item };
 
-        RecurseItems(ref span, reader, level, items, firstItemAdded: true);
+        RecurseItems(ref span, reader, level, trimOffset, items, firstItemAdded: true);
         
-        value = new MdList(items);
+        value = new MdList(items, trimOffset);
 
         return true;
     }
 
-    private static void RecurseItems(ref ReadOnlySpan<char> span, TextReader reader, int level, IList<IMdListItem> items, bool firstItemAdded = false)
+    private static void RecurseItems(ref ReadOnlySpan<char> span, TextReader reader, int level, int trimOffset, IList<IMdListItem> items, bool firstItemAdded = false)
     {
         if (!firstItemAdded)
         {
-            if (!MdListItem.TryParse(in span, level, out IMdListItem? item))
+            if (!MdListItem.TryParse(in span, level, trimOffset, out IMdListItem? item))
             {
                 return;
             }
@@ -78,7 +81,7 @@ public class MdList : IMdList
 
         for (var i = 1; i >= 0; i--)
         {
-            RecurseItems(ref span, reader, level + i, items);
+            RecurseItems(ref span, reader, level + i, trimOffset, items);
         }
 
         return;

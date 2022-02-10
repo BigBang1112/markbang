@@ -23,7 +23,7 @@ public class MdListTests
             new MdListItem("I am doing great", Level: 1),
         };
 
-        AssertJustList(str, out IMdList? actualList);
+        AssertJustList(str, trimOffset: 0, out IMdList? actualList);
         Assert.Equal(expectedList, actualList);
     }
 
@@ -37,7 +37,7 @@ public class MdListTests
             new MdListItem("hello")
         };
 
-        AssertJustList(str, out IMdList? actualList);
+        AssertJustList(str, trimOffset: 0, out IMdList? actualList);
         Assert.Equal(expectedList, actualList);
     }
 
@@ -56,7 +56,26 @@ public class MdListTests
             new MdListItem("I am doing great"),
         };
 
-        AssertJustList(str, out IMdList? actualList);
+        AssertJustList(str, trimOffset: 0, out IMdList? actualList);
+        Assert.Equal(expectedList, actualList);
+    }
+
+    [Fact]
+    public void TryParse_MultipleItemsUnorderedSpaced_ShouldCreateMdList()
+    {
+        var str =
+" - hello" + Environment.NewLine +
+" - how are you doing" + Environment.NewLine +
+" - I am doing great";
+
+        var expectedList = new IMdListItem[]
+        {
+            new MdListItem("hello"),
+            new MdListItem("how are you doing"),
+            new MdListItem("I am doing great"),
+        };
+
+        AssertJustList(str, trimOffset: 1, out IMdList? actualList);
         Assert.Equal(expectedList, actualList);
     }
 
@@ -70,7 +89,7 @@ public class MdListTests
             new MdListItem("hello", Rank: 1)
         };
 
-        AssertJustList(str, out IMdList? actualList);
+        AssertJustList(str, trimOffset: 0, out IMdList? actualList);
         Assert.Equal(expectedList, actualList);
     }
 
@@ -89,7 +108,7 @@ public class MdListTests
             new MdListItem("I am doing great", Rank: 3),
         };
 
-        AssertJustList(str, out IMdList? actualList);
+        AssertJustList(str, trimOffset: 0, out IMdList? actualList);
         Assert.Equal(expectedList, actualList);
     }
 
@@ -109,22 +128,22 @@ public class MdListTests
             new MdListItem("I am doing great"),
         };
 
-        AssertAnyList(str, out IMdList? actualList, out ReadOnlySpan<char> line);
+        AssertAnyList(str, trimOffset: 0, out IMdList? actualList, out ReadOnlySpan<char> line);
         Assert.Equal(expectedList, actualList);
-        Assert.True(MdHeading.TryParse(line, out _));
+        Assert.True(MdHeading.TryParse(line, trimOffset: 0, out _));
     }
 
-    private static void AssertJustList(string str, out IMdList? actualList)
+    private static void AssertJustList(string str, int trimOffset, out IMdList? actualList)
     {
-        AssertAnyList(str, out actualList, out ReadOnlySpan<char> line);
+        AssertAnyList(str, trimOffset, out actualList, out ReadOnlySpan<char> line);
         Assert.True(line.IsEmpty);
     }
 
-    private static void AssertAnyList(string str, out IMdList? actualList, out ReadOnlySpan<char> line)
+    private static void AssertAnyList(string str, int trimOffset, out IMdList? actualList, out ReadOnlySpan<char> line)
     {
         var r = new StringReader(str);
         line = r.ReadLine();
-        var parsed = MdList.TryParse(ref line, 0, r, out IMdBlock? mdBlock);
+        var parsed = MdList.TryParse(ref line, level: 0, trimOffset, r, out IMdBlock? mdBlock);
 
         actualList = mdBlock as IMdList;
 

@@ -42,13 +42,15 @@ public class Markdown : IList<IMdBlock>
 
         var paragraph = default(IMdParagraph);
 
-        while (TryParseBlock(reader, out IMdBlock? block, out string? possibleParagraphLine))
+        while (TryParseBlock(reader, out IMdBlock? block,
+            out string? possibleParagraphLine,
+            out int possibleParagraphLineTrimOffset))
         {
             if (possibleParagraphLine is not null)
             {
                 if (paragraph is null)
                 {
-                    paragraph = new MdParagraph(possibleParagraphLine, readOnly: false, singleLine: true);
+                    paragraph = new MdParagraph(possibleParagraphLine, readOnly: false, singleLine: true, possibleParagraphLineTrimOffset);
 
                     continue;
                 }
@@ -75,7 +77,7 @@ public class Markdown : IList<IMdBlock>
         return new Markdown(blocks);
     }
 
-    private static bool TryParseBlock(TextReader reader, out IMdBlock? block, out string? possibleParagraphLine)
+    private static bool TryParseBlock(TextReader reader, out IMdBlock? block, out string? possibleParagraphLine, out int possibleParagraphLineTrimOffset)
     {
         var lineStr = reader.ReadLine();
 
@@ -83,28 +85,55 @@ public class Markdown : IList<IMdBlock>
         {
             block = null;
             possibleParagraphLine = null;
+            possibleParagraphLineTrimOffset = 0;
 
             // True if empty, false if null
             return lineStr == "";
         }
 
         var line = lineStr.AsSpan();
+        var lineTrimmed = line.TrimStart();
 
-        if (MdHeading.TryParse(in line, out block))
+        var trimLength = GetTrimLength(in line);
+
+        if (MdHeading.TryParse(in lineTrimmed, trimLength, out block))
         {
             possibleParagraphLine = null;
+            possibleParagraphLineTrimOffset = 0;
             return true;
         }
 
-        if (MdList.TryParse(ref line, level: 0, reader, out block))
+
+        if (MdList.TryParse(ref lineTrimmed, level: 0, trimOffset: trimLength, reader, out block))
         {
             possibleParagraphLine = null;
+            possibleParagraphLineTrimOffset = 0;
             return true;
         }
 
-        possibleParagraphLine = lineStr;
+        possibleParagraphLine = trimLength > 0 ? lineTrimmed.ToString() : lineStr;
+        possibleParagraphLineTrimOffset = trimLength;
 
         return true;
+    }
+
+    private static int GetTrimLength(in ReadOnlySpan<char> line)
+    {
+        var length = 0;
+
+        for (var i = 0; i < line.Length; i++)
+        {
+            if (line[i] == ' ')
+            {
+                length++;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return length;
     }
 
     public void Add(IMdBlock item)

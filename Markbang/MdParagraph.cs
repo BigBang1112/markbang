@@ -3,9 +3,12 @@
 public class MdParagraph : IMdParagraph
 {
     public IList<string> Lines { get; init; }
+    public int TrimOffset { get; init; }
 
-    public MdParagraph(ReadOnlySpan<char> span, bool singleLine = false)
+    public MdParagraph(ReadOnlySpan<char> span, bool singleLine = false, int trimOffset = 0)
     {
+        TrimOffset = trimOffset;
+
         if (singleLine)
         {
             Lines = new List<string> { span.ToString() };
@@ -20,8 +23,10 @@ public class MdParagraph : IMdParagraph
         }
     }
 
-    public MdParagraph(string text, bool readOnly = false, bool singleLine = false)
+    public MdParagraph(string text, bool readOnly = false, bool singleLine = false, int trimOffset = 0)
     {
+        TrimOffset = trimOffset;
+
         if (singleLine)
         {
             if (readOnly)

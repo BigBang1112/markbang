@@ -26,7 +26,7 @@ public record MdListItem(string Text, int Level = 0, int? Rank = null) : IMdList
         return $"{Rank}. {Text}";
     }
 
-    internal static bool TryParse(in ReadOnlySpan<char> span, int level, [NotNullWhen(true)] out IMdListItem? item)
+    internal static bool TryParse(in ReadOnlySpan<char> span, int level, int trimOffset, [NotNullWhen(true)] out IMdListItem? item)
     {
         if (span.IsEmpty)
         {
@@ -34,7 +34,7 @@ public record MdListItem(string Text, int Level = 0, int? Rank = null) : IMdList
             return false;
         }
 
-        var slice = level == 0 ? span : span[(level * 2)..];
+        var slice = level == 0 && trimOffset == 0 ? span : span[(level * 2 + trimOffset)..];
 
         // Can happen if next level of identation is attempted
         if (slice.IsEmpty)
