@@ -49,7 +49,7 @@ public class MdCodeBlock : IMdCodeBlock
             return TryParseIndented(ref span, trimOffset, reader, out value);
         }
 
-        if (span[0] != '`' || (!span.StartsWith("```") && span.Length > 3 && !span.EndsWith("```")))
+        if (span[0] != '`' || (span.StartsWith("```") && span.Length >= 6 && span.EndsWith("```")))
         {
             value = null;
             return false;
@@ -93,7 +93,7 @@ public class MdCodeBlock : IMdCodeBlock
         }
 
         value = new MdCodeBlock(codeLines, language, isIndented: false, trimOffset);
-        return false;
+        return true;
     }
 
     private static bool TryParseIndented(ref ReadOnlySpan<char> span, int trimOffset, TextReader reader, out IMdBlock? value)
