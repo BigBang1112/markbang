@@ -16,11 +16,11 @@ public class MdListTests
         var expectedList = new IMdListItem[]
         {
             new MdListItem("hello"),
-            new MdListItem("how are you doing", Level: 1, Rank: 1),
-            new MdListItem("ok", Level: 1, Rank: 2),
-            new MdListItem("bruh", Level: 2),
+            new MdListItem("how are you doing", Level: 2, Rank: 1),
+            new MdListItem("ok", Level: 2, Rank: 2),
+            new MdListItem("bruh", Level: 4),
             new MdListItem("kek", Rank: 3),
-            new MdListItem("I am doing great", Level: 1),
+            new MdListItem("I am doing great", Level: 2),
         };
 
         AssertJustList(str, trimOffset: 0, out IMdList? actualList);

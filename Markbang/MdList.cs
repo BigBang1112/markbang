@@ -62,29 +62,31 @@ public class MdList : IMdList
 
     private static void RecurseItems(ref ReadOnlySpan<char> span, TextReader reader, int level, int trimOffset, IList<IMdListItem> items, bool firstItemAdded = false)
     {
-        if (!firstItemAdded)
+        while (true)
         {
-            if (span.IsEmpty || !MdListItem.TryParse(in span, level, trimOffset, out IMdListItem? item))
+            if (!firstItemAdded)
             {
-                return;
+                if (span.IsEmpty || !MdListItem.TryParse(in span, level, trimOffset, out IMdListItem? item))
+                {
+                    break;
+                }
+
+                items.Add(item);
             }
 
-            items.Add(item);
+            span = reader.ReadLine();
+
+            if (span.IsEmpty)
+            {
+                break;
+            }
+
+            var nextLevel = span.TrimStartLength() - trimOffset;
+
+            RecurseItems(ref span, reader, nextLevel, trimOffset, items);
+
+            firstItemAdded = false;
         }
-
-        span = reader.ReadLine();
-
-        if (span.IsEmpty)
-        {
-            return;
-        }
-
-        for (var i = 1; i >= 0; i--)
-        {
-            RecurseItems(ref span, reader, level + i, trimOffset, items);
-        }
-
-        return;
     }
 
     public void Add(IMdListItem item)

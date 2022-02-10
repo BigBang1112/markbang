@@ -32,9 +32,9 @@ public record MdListItem(string Text, int Level = 0, int? Rank = null) : IMdList
         {
             item = null;
             return false;
-        }
+        }        
 
-        var slice = level == 0 && trimOffset == 0 ? span : span[(level * 2 + trimOffset)..];
+        var slice = level == 0 && trimOffset == 0 ? span : span[(level + trimOffset)..];
 
         // Can happen if next level of identation is attempted
         if (slice.IsEmpty)

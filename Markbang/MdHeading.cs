@@ -2,6 +2,7 @@
 
 public record MdHeading(int Level, string Text, int TrimOffset = 0) : IMdHeading
 {
+    /// <remarks>Parameter <paramref name="span"/> should have at least 1 character.</remarks>
     internal static bool TryParse(in ReadOnlySpan<char> span, int trimOffset, out IMdBlock? value)
     {
         if (span[0] != '#')
