@@ -33,7 +33,7 @@ public class MdCodeBlock : IMdCodeBlock
         TrimOffset = trimOffset;
         CodeLines = new List<string>();
 
-        foreach (var line in code.EnumerateLines())
+        foreach (var line in code.Enumerate(Environment.NewLine))
         {
             CodeLines.Add(line.ToString());
         }

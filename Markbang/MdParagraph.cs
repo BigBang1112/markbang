@@ -17,7 +17,7 @@ public class MdParagraph : IMdParagraph
 
         Lines = new List<string>();
 
-        foreach (var line in span.EnumerateLines())
+        foreach (var line in span.Enumerate(Environment.NewLine))
         {
             Lines.Add(line.ToString());
         }
