@@ -138,16 +138,16 @@ public class Markdown : IWriteable, IList<IMdBlock>
 
         var trimLength = line.TrimStartLength();
 
-        if (TryParseBlock_Ref(ref lineTrimmed, trimLength, reader, out block))
+        if (TryParseBlock_In(in lineTrimmed, trimLength, out block))
         {
-            line = lineTrimmed;
             possibleParagraphLine = null;
             possibleParagraphLineTrimOffset = 0;
             return true;
         }
 
-        if (TryParseBlock_In(in lineTrimmed, trimLength, out block))
+        if (TryParseBlock_Ref(ref lineTrimmed, trimLength, reader, out block))
         {
+            line = lineTrimmed;
             possibleParagraphLine = null;
             possibleParagraphLineTrimOffset = 0;
             return true;

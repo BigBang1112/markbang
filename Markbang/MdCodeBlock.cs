@@ -133,6 +133,25 @@ public class MdCodeBlock : IMdCodeBlock
 
     public void Write(TextWriter writer)
     {
-        throw new NotImplementedException();
+        if (IsIndented)
+        {
+            throw new NotImplementedException();
+        }
+
+        if (string.IsNullOrWhiteSpace(Language))
+        {
+            writer.WriteLine("```");
+        }
+        else
+        {
+            writer.WriteLine($"```{Language}");
+        }
+
+        foreach (var line in CodeLines)
+        {
+            writer.WriteLine(line);
+        }
+
+        writer.WriteLine("```");
     }
 }

@@ -56,7 +56,7 @@ public record MdListItem(string Text, int Level = 0, int? Rank = null) : IMdList
     {
         if (Level > 0)
         {
-            var spacing = new string(' ', Level * 2);
+            var spacing = new string(' ', Level);
 
             if (Rank is null)
             {
