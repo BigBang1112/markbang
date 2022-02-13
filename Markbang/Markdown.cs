@@ -45,6 +45,12 @@ public class Markdown : IWriteable, IList<IMdBlock>
         Save(w);
     }
 
+    public void Save(Stream stream)
+    {
+        using var w = new StreamWriter(stream);
+        Save(w);
+    }
+
     public void Save(TextWriter writer)
     {
         Write(writer);
@@ -59,6 +65,12 @@ public class Markdown : IWriteable, IList<IMdBlock>
     public static Markdown Parse(string fileName)
     {
         using var r = new StreamReader(fileName);
+        return Parse(r);
+    }
+
+    public static Markdown Parse(Stream stream)
+    {
+        using var r = new StreamReader(stream);
         return Parse(r);
     }
 
