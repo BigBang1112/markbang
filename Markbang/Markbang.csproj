@@ -1,14 +1,36 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
+		<Product>Markbang</Product>
+		<AssemblyName>Markbang</AssemblyName>
+		<AssemblyTitle>Markbang</AssemblyTitle>
+		<Authors>Petr Pivoňka (BigBang1112)</Authors>
+		<Description>High-performance and lightweight solution to object-orient the Markdown markup language in .NET (written in C#).</Description>
+		<Copyright>Copyright © Petr 'BigBang1112' Pivoňka</Copyright>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageTags>markdown, md, parser</PackageTags>
+
+		<Version>0.1.0</Version>
+		<PackageReleaseNotes></PackageReleaseNotes>
+		
 		<TargetFrameworks>net6.0;netstandard2.1</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<LangVersion>10</LangVersion>
+
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/BigBang1112/markbang</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/BigBang1112/markbang</PackageProjectUrl>
+		
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+		<NoWarn>1591</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Using Include="Markbang.Extensions"/>
+		<Using Include="Markbang.Extensions" />
 	</ItemGroup>
 
 	<ItemGroup>
