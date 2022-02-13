@@ -2,7 +2,7 @@
 
 // Thanks! https://stackoverflow.com/a/51099524/3923447
 
-public static class Int64Extensions
+internal static class Int32Extensions
 {
     public static int Digits(this int n)
     {

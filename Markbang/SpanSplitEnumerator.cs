@@ -1,6 +1,6 @@
 ﻿namespace Markbang;
 
-public ref struct SpanSplitEnumerator
+internal ref struct SpanSplitEnumerator
 {
     private readonly char? separatorChar;
     private readonly ReadOnlySpan<char> separator;
