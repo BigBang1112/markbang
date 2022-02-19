@@ -113,6 +113,11 @@ public class Markdown : IWriteable, IList<IMdBlock>
             }
         }
 
+        if (paragraph is not null)
+        {
+            blocks.Add(paragraph);
+        }
+
         return new Markdown(blocks);
     }
 
