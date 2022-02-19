@@ -56,26 +56,23 @@ Benchmarks were done using a `StringReader` and `StringWriter`, to reduce the IO
 ```
 BenchmarkDotNet=v0.13.1, OS=Windows 10.0.19043.1526 (21H1/May2021Update)
 AMD Ryzen 7 3700X, 1 CPU, 16 logical and 8 physical cores
-.NET SDK=6.0.200
+.NET SDK=6.0.102
   [Host]        : .NET 6.0.2 (6.0.222.6406), X64 RyuJIT  [AttachedDebugger]
   .NET 5.0      : .NET 5.0.14 (5.0.1422.5710), X64 RyuJIT
   .NET Core 3.1 : .NET Core 3.1.22 (CoreCLR 4.700.21.56803, CoreFX 4.700.21.57101), X64 RyuJIT
 ```
 
-|                     Method |           Job |       Runtime |       Mean |     Error |    StdDev |   Gen 0 |  Gen 1 | Allocated |
-|--------------------------- |-------------- |-------------- |-----------:|----------:|----------:|--------:|-------:|----------:|
-|            Parse_GBXNET_Md |      .NET 5.0 |      .NET 5.0 |  39.027 us | 0.6426 us | 0.6011 us | 10.0098 | 2.1973 |     82 KB |
-|             Save_GBXNET_Md |      .NET 5.0 |      .NET 5.0 |  20.915 us | 0.1839 us | 0.1536 us |  8.2703 | 1.0986 |     68 KB |
-| Parse_CGameCtnChallenge_Md |      .NET 5.0 |      .NET 5.0 | 118.923 us | 1.5785 us | 1.4765 us | 22.7051 | 7.9346 |    186 KB |
-|  Save_CGameCtnChallenge_Md |      .NET 5.0 |      .NET 5.0 |  58.599 us | 0.7669 us | 0.6404 us | 13.7939 | 3.4180 |    113 KB |
-|          Parse_Markbang_Md |      .NET 5.0 |      .NET 5.0 |  20.812 us | 0.4123 us | 0.4050 us |  4.0283 | 0.4883 |     33 KB |
-|           Save_Markbang_Md |      .NET 5.0 |      .NET 5.0 |   9.919 us | 0.1808 us | 0.1691 us |  3.2043 | 0.1984 |     26 KB |
-|            Parse_GBXNET_Md | .NET Core 3.1 | .NET Core 3.1 |  41.923 us | 0.8350 us | 1.0561 us | 10.0098 | 2.5024 |     82 KB |
-|             Save_GBXNET_Md | .NET Core 3.1 | .NET Core 3.1 |  23.176 us | 0.4446 us | 0.3941 us |  8.2703 | 1.0376 |     68 KB |
-| Parse_CGameCtnChallenge_Md | .NET Core 3.1 | .NET Core 3.1 | 141.086 us | 2.7459 us | 3.7586 us | 22.7051 | 8.0566 |    186 KB |
-|  Save_CGameCtnChallenge_Md | .NET Core 3.1 | .NET Core 3.1 |  68.294 us | 1.3468 us | 1.4411 us | 13.7939 | 3.4180 |    113 KB |
-|          Parse_Markbang_Md | .NET Core 3.1 | .NET Core 3.1 |  24.307 us | 0.4517 us | 0.4226 us |  4.0283 | 0.4883 |     33 KB |
-|           Save_Markbang_Md | .NET Core 3.1 | .NET Core 3.1 |  10.940 us | 0.2036 us | 0.1904 us |  3.2043 | 0.1984 |     26 KB |
+
+|                     Method |           Job |       Runtime |      Mean |    Error |   StdDev |   Gen 0 |  Gen 1 | Allocated |
+|--------------------------- |-------------- |-------------- |----------:|---------:|---------:|--------:|-------:|----------:|
+|            Parse_GBXNET_Md |      .NET 5.0 |      .NET 5.0 |  45.49 us | 0.855 us | 0.878 us | 10.0708 | 2.2583 |     82 KB |
+|             Save_GBXNET_Md |      .NET 5.0 |      .NET 5.0 |  26.45 us | 0.522 us | 0.901 us |  6.7749 | 0.7324 |     56 KB |
+| Parse_CGameCtnChallenge_Md |      .NET 5.0 |      .NET 5.0 | 141.63 us | 1.659 us | 1.552 us | 22.7051 | 8.0566 |    186 KB |
+|  Save_CGameCtnChallenge_Md |      .NET 5.0 |      .NET 5.0 |  71.02 us | 1.348 us | 1.552 us | 13.7939 | 3.4180 |    114 KB |
+|            Parse_GBXNET_Md | .NET Core 3.1 | .NET Core 3.1 |  48.46 us | 0.943 us | 0.968 us | 10.0708 | 2.2583 |     82 KB |
+|             Save_GBXNET_Md | .NET Core 3.1 | .NET Core 3.1 |  25.31 us | 0.309 us | 0.289 us |  6.7749 | 0.7324 |     56 KB |
+| Parse_CGameCtnChallenge_Md | .NET Core 3.1 | .NET Core 3.1 | 145.52 us | 1.558 us | 1.457 us | 22.7051 | 8.0566 |    186 KB |
+|  Save_CGameCtnChallenge_Md | .NET Core 3.1 | .NET Core 3.1 |  76.44 us | 0.817 us | 0.724 us | 13.7939 | 3.2959 |    114 KB |
 
 Tables are the slowest part of reading, as each cell is being allocated as its own string. It is still questionable if to change this or not.
 

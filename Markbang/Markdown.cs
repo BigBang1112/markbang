@@ -113,6 +113,11 @@ public class Markdown : IWriteable, IList<IMdBlock>
             }
         }
 
+        if (paragraph is not null)
+        {
+            blocks.Add(paragraph);
+        }
+
         return new Markdown(blocks);
     }
 
@@ -176,7 +181,6 @@ public class Markdown : IWriteable, IList<IMdBlock>
     /// </summary>
     /// <param name="lineTrimmed"></param>
     /// <param name="trimLength"></param>
-    /// <param name="reader"></param>
     /// <param name="block"></param>
     /// <returns></returns>
     private static bool TryParseBlock_In(in ReadOnlySpan<char> lineTrimmed,

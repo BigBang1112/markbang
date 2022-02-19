@@ -71,7 +71,7 @@ public record MdHeading(int Level, string Text, int TrimOffset = 0) : IMdHeading
 
         var level = 1;
 
-        while (span[level] == '#')
+        while (span.Length > level + 1 && span[level] == '#')
         {
             level++;
         }
@@ -81,8 +81,6 @@ public record MdHeading(int Level, string Text, int TrimOffset = 0) : IMdHeading
             value = null;
             return false;
         }
-
-        level++;
 
         value = new MdHeading(level, span[level..].Trim().ToString(), trimOffset);
 
