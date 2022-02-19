@@ -10,7 +10,7 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageTags>markdown, md, parser</PackageTags>
 
-		<Version>0.1.0</Version>
+		<Version>0.1.1</Version>
 		<PackageReleaseNotes></PackageReleaseNotes>
 		
 		<TargetFrameworks>net6.0;netstandard2.1</TargetFrameworks>
