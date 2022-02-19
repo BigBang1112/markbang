@@ -16,7 +16,7 @@ GBX.NET is a GameBox (.Gbx) file parser library written in C# for .NET software 
 
 Here are some of the useful classes/types to start with:
 
-| Extension | Node | Can read | Can write
+| Extension | Class | Can read | Can write
 | --- | --- | --- | ---
 | Map.Gbx<sup>1</sup> | [CGameCtnChallenge](Src/GBX.NET/Engines/Game/CGameCtnChallenge.cs) | Yes | Yes
 | Replay.Gbx | [CGameCtnReplayRecord](Src/GBX.NET/Engines/Game/CGameCtnReplayRecord.cs) | Yes | **No<sup>2</sup>**
@@ -44,7 +44,7 @@ Here are some of the useful classes/types to start with:
 ## Compatibility
 
 - GBX.NET is compatible down to **.NET Standard 2.0** and **.NET Framework 4.6.2**.
-- Current language version is 10 and you need Visual Studio 2022 to contribute to the project + installation of .NET Framework 4.6.2 SDK **(you don't need Visual Studio 2022 if you install the project as NuGet package)**.
+- Current language version is 10 and you need Visual Studio 2022 to contribute to the project + installation of .NET Framework 4.6.2 Targeting Pack **(you don't need Visual Studio 2022 if you install the project as NuGet package)**.
 - The library supports **saving Gbx files in 64bit environment** since 0.10.0. In the older versions, to be able to save your Gbx, set your platform target to **x86**.
 
 ## Techniques
